@@ -1,7 +1,13 @@
-using Microsoft.OpenApi.Models;
+using WorkoutApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var conn = builder.Configuration.GetConnectionString("WorkoutConnection");
+
+builder.Services.AddDbContext<WorkoutAppContext>(opts =>
+    opts.UseMySql(conn, ServerVersion.AutoDetect(conn))
+);
 
 builder.Services.AddHealthChecks();
 

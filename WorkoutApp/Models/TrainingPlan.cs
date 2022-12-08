@@ -32,5 +32,7 @@ namespace WorkoutApp.Models
         public string? Comments { get; set; } 
         public int Likes { get; set; }
 
+        public virtual List<Training> Training { get; set; }
+
     }
 }

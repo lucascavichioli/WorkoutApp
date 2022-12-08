@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography.Xml;
 using WorkoutApp.Models;
 
 namespace WorkoutApp.Controllers
@@ -10,16 +11,26 @@ namespace WorkoutApp.Controllers
         private static List<TrainingPlan> plans = new List<TrainingPlan>();
 
         [HttpPost]
-        public void AddTrainingPlan([FromBody] TrainingPlan plan) 
+        public IActionResult AddTrainingPlan([FromBody] TrainingPlan plan) 
         {
+            plan.Id = Guid.NewGuid();
             plans.Add(plan);
-            Console.WriteLine(plan.Author);
+            return CreatedAtAction(nameof(GetTrainingPlanById), new { id = plan.Id}, plan);
         }
 
         [HttpGet]
-        public IEnumerable<TrainingPlan> GetTrainingPlan() 
+        public IEnumerable<TrainingPlan> GetTrainingPlan([FromQuery] int skip = 0, [FromQuery] int take = 50) 
         {
-            return plans;
+            return plans.Skip(skip).Take(take);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetTrainingPlanById(Guid id)
+        {
+            var plan = plans.FirstOrDefault(plan => plan.Id == id);
+            if (plan == null) return NotFound();
+
+            return Ok(plan);
         }
 
     }

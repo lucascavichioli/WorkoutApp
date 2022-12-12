@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutApp.Data;
 
@@ -10,48 +11,15 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutAppContext))]
-    partial class WorkoutAppContextModelSnapshot : ModelSnapshot
+    [Migration("20221212224628_Atualizando relacionamento de tabelas")]
+    partial class Atualizandorelacionamentodetabelas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("WorkoutApp.Models.Exercises", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("DurationMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LinkVideo")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Reps")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestSeconds")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sets")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exercises");
-                });
 
             modelBuilder.Entity("WorkoutApp.Models.Training", b =>
                 {
@@ -59,14 +27,14 @@ namespace WorkoutApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("Comments")
-                        .HasColumnType("int");
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<short>("DurationMinutes")
+                    b.Property<short>("Duration")
                         .HasColumnType("smallint");
 
                     b.Property<int>("Likes")
@@ -81,47 +49,6 @@ namespace WorkoutApp.Migrations
                     b.ToTable("Training");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingExercises", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Comments")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("DurationMinutes")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ExercisesFK")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("TrainingFK")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExercisesFK");
-
-                    b.HasIndex("TrainingFK");
-
-                    b.ToTable("TrainingExercises");
-                });
-
             modelBuilder.Entity("WorkoutApp.Models.TrainingPlan", b =>
                 {
                     b.Property<Guid>("Id")
@@ -134,8 +61,8 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
-                    b.Property<int>("Comments")
-                        .HasColumnType("int");
+                    b.Property<string>("Comments")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -179,7 +106,7 @@ namespace WorkoutApp.Migrations
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
-                    b.Property<int>("Order")
+                    b.Property<int>("OrderTraining")
                         .HasColumnType("int");
 
                     b.HasKey("TrainingPlanFK", "TrainingFK");
@@ -190,25 +117,6 @@ namespace WorkoutApp.Migrations
                         .IsUnique();
 
                     b.ToTable("TrainingPlanTraining");
-                });
-
-            modelBuilder.Entity("WorkoutApp.Models.TrainingExercises", b =>
-                {
-                    b.HasOne("WorkoutApp.Models.Exercises", "Exercises")
-                        .WithMany("TrainingExercises")
-                        .HasForeignKey("ExercisesFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WorkoutApp.Models.Training", "Training")
-                        .WithMany("TrainingExercises")
-                        .HasForeignKey("TrainingFK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Exercises");
-
-                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("WorkoutApp.Models.TrainingPlanTraining", b =>
@@ -230,15 +138,8 @@ namespace WorkoutApp.Migrations
                     b.Navigation("TrainingPlan");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.Exercises", b =>
-                {
-                    b.Navigation("TrainingExercises");
-                });
-
             modelBuilder.Entity("WorkoutApp.Models.Training", b =>
                 {
-                    b.Navigation("TrainingExercises");
-
                     b.Navigation("TrainingPlanTraining");
                 });
 

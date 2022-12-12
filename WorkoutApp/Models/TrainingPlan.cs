@@ -29,10 +29,10 @@ namespace WorkoutApp.Models
 
         public string? LocationDifficulty { get; set; } // reference
 
-        public string? Comments { get; set; } 
+        public int Comments { get; set; } 
         public int Likes { get; set; }
 
-        public virtual List<Training> Training { get; set; }
+        public virtual TrainingPlanTraining TrainingPlanTraining { get; set; }
 
     }
 }

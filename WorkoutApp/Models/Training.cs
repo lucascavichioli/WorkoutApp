@@ -21,5 +21,10 @@ namespace WorkoutApp.Models
 
         public int Likes { get; set; }
         public int Comments { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public Guid TraceId { get; set; }
+
     }
 }

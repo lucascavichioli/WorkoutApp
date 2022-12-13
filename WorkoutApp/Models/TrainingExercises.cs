@@ -26,5 +26,10 @@ namespace WorkoutApp.Models
         public int Comments { get; set; }
 
         public int Order { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public Guid TraceId { get; set; }
+
     }
 }

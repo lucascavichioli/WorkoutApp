@@ -23,5 +23,10 @@ namespace WorkoutApp.Models
                                             DayOfWeek = value; 
                                     } 
                              }
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+
+        public Guid TraceId { get; set; }
     }
 }

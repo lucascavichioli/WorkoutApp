@@ -40,5 +40,8 @@ namespace WorkoutApp.Data
 
         public DbSet<TrainingPlan> TrainingPlan {get; set;}
         public DbSet<Training> Training { get; set; }
+        public DbSet<TrainingPlanTraining> TrainingPlanTraining { get; set; }
+        public DbSet<TrainingExercises> TrainingExercises { get; set; }
+        public DbSet<Exercises> Exercises { get; set; }
     }
 }

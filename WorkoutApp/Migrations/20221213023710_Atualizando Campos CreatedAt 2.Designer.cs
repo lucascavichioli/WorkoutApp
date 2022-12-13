@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutApp.Data;
 
@@ -10,9 +11,10 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutAppContext))]
-    partial class WorkoutAppContextModelSnapshot : ModelSnapshot
+    [Migration("20221213023710_Atualizando Campos CreatedAt 2")]
+    partial class AtualizandoCamposCreatedAt2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +53,6 @@ namespace WorkoutApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("TraceId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -87,9 +86,6 @@ namespace WorkoutApp.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<Guid>("TraceId")
-                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -130,9 +126,6 @@ namespace WorkoutApp.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<Guid>("TraceId")
-                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("TrainingFK")
                         .HasColumnType("char(36)");
@@ -195,9 +188,6 @@ namespace WorkoutApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("TraceId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -222,9 +212,6 @@ namespace WorkoutApp.Migrations
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("TraceId")
-                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");

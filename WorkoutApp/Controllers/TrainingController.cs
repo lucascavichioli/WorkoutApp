@@ -8,7 +8,7 @@ using WorkoutApp.Models;
 
 namespace WorkoutApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class TrainingController : ControllerBase
     {

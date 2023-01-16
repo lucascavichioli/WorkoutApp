@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using WorkoutApp.Models;
-
-namespace WorkoutApp.Data.Dtos
+﻿namespace WorkoutApp.Data.Dtos
 {
     public class CreateExerciseDTO
     {

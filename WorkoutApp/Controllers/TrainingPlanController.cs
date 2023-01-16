@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.Xml;
 using WorkoutApp.Data;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Models;
@@ -22,7 +21,7 @@ namespace WorkoutApp.Controllers
         }
 
         /// <summary>
-        /// Adiciona um filme ao banco de dados
+        /// Adiciona um plano de treino ao banco de dados
         /// </summary>
         /// <param name="CreateTrainingPlanDTO">Objeto com os campos necessários para criação de um filme</param>
         /// <returns>IActionResult</returns>

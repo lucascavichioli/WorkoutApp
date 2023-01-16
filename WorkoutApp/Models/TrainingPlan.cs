@@ -18,7 +18,7 @@ namespace WorkoutApp.Models
         [Required]
         public int Author { get; set; } //reference
 
-        [StringLength(80)]
+        [StringLength(255)]
         public string? ImageLink { get; set; }
 
         public short Length { get; set; } //quantas semanas

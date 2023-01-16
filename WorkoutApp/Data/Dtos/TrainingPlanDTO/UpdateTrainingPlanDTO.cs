@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace WorkoutApp.Data.Dtos
+﻿namespace WorkoutApp.Data.Dtos
 {
-    public class CreateTrainingPlanDTO
+    public class UpdateTrainingPlanDTO
     {
         public string Title { get; set; }
 

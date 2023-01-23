@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +18,19 @@ builder.Services.AddHealthChecks();
 // Add services to the container.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddControllers().AddNewtonsoftJson(options => {
+builder.Services.AddControllers(options =>
+{
+    options.CacheProfiles.Add("Default86400",
+        new CacheProfile()
+        {
+            Duration = 86400
+        });
+})
+.AddNewtonsoftJson(options =>
+{
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-});
+}
+);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -31,6 +42,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddCors();
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
@@ -46,6 +58,8 @@ app.UseCors(c => {
     c.AllowAnyMethod();
     c.AllowAnyOrigin();
 });
+
+app.UseResponseCaching();
 
 app.MapHealthChecks("/healthz");
 

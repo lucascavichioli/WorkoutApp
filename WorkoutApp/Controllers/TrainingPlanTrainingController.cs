@@ -9,6 +9,7 @@ using WorkoutApp.Models;
 namespace WorkoutApp.Controllers
 {
     [ApiController]
+    [ResponseCache(CacheProfileName = "Default86400")]
     [Route("[controller]")]
     public class TrainingPlanTrainingController : ControllerBase
     {

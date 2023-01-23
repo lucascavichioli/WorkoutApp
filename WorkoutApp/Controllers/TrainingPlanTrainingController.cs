@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Data;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Models;
@@ -40,15 +41,20 @@ namespace WorkoutApp.Controllers
         [HttpGet("{trainingPlanId}")]
         public IActionResult GetTrainingPlanTrainingById(Guid trainingPlanId)
         {
-            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId);
+            //var trainingPlanTraining = _context.TrainingPlanTraining.Where(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId);
+
+            var trainingPlanTraining = _context.TrainingPlanTraining
+                                               .Include(x => x.Training)
+                                               .Where(x => x.TrainingPlanFK == trainingPlanId);
+
             if (trainingPlanTraining == null) return NotFound();
 
-            var trainingPlanTrainingDTO = _mapper.Map<ReadTrainingPlanTrainingDTO>(trainingPlanTraining);
+            var trainingPlanTrainingDTO = _mapper.Map<List<ReadTrainingPlanTrainingDTO>>(trainingPlanTraining);
 
             return Ok(trainingPlanTrainingDTO);
         }
 
-        [HttpPut("{trainingPlanId, trainingId}")]
+        [HttpPut("{trainingPlanId}/{trainingId}")]
         public IActionResult UpdateTrainingPlanTraining(Guid trainingPlanId, Guid trainingId, [FromBody] UpdateTrainingPlanTrainingDTO trainingPlanTrainingDTO)
         {
             var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId && trainingPlanTraining.TrainingFK == trainingId);
@@ -58,7 +64,7 @@ namespace WorkoutApp.Controllers
             return NoContent();
         }
 
-        [HttpPatch("{trainingPlanId, trainingId}")]
+        [HttpPatch("{trainingPlanId}/{trainingId}")]
         public IActionResult PartialUpdateTrainingPlanTraining(Guid trainingPlanId, Guid trainingId, JsonPatchDocument<UpdateTrainingPlanTrainingDTO> patch)
         {
             var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId && trainingPlanTraining.TrainingFK == trainingId);
@@ -77,7 +83,7 @@ namespace WorkoutApp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{trainingPlanId, trainingId}")]
+        [HttpDelete("{trainingPlanId}/{trainingId}")]
 
         public IActionResult DeleteTrainingPlanTraining(Guid trainingPlanId, Guid trainingId)
         {

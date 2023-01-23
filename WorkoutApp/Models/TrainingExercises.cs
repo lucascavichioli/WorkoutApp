@@ -27,6 +27,9 @@ namespace WorkoutApp.Models
         
         [Required]
         public int DurationMinutes { get; set; } // minutes
+        public int Sets { get; set; }
+        public string Reps { get; set; } //refatorar para deixar dinamico
+        public int RestSeconds { get; set; } //descanso em segundos
         public int Likes { get; set; }
         public int Comments { get; set; }
 

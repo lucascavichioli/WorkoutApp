@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutApp.Data;
 
@@ -10,9 +11,10 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutAppContext))]
-    partial class WorkoutAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230123002353_Refatorando campos da tabela exercicios")]
+    partial class Refatorandocamposdatabelaexercicios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

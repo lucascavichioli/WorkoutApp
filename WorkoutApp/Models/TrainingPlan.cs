@@ -40,7 +40,7 @@ namespace WorkoutApp.Models
         public Guid TraceId { get; set; }
 
         [JsonIgnore]
-        public virtual TrainingPlanTraining TrainingPlanTraining { get; set; }
+        public virtual List<TrainingPlanTraining> TrainingPlanTraining { get; set; }
 
     }
 }

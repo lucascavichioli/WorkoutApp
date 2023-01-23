@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkoutApp.Data;
 
@@ -10,9 +11,10 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutAppContext))]
-    partial class WorkoutAppContextModelSnapshot : ModelSnapshot
+    [Migration("20230123001736_Tornando o campo Sets no tipo string")]
+    partial class TornandoocampoSetsnotipostring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +34,21 @@ namespace WorkoutApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("DurationMinutes")
+                        .HasColumnType("int");
+
                     b.Property<string>("LinkVideo")
                         .HasColumnType("longtext");
+
+                    b.Property<string>("Reps")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RestSeconds")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sets")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -113,16 +128,6 @@ namespace WorkoutApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reps")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("RestSeconds")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sets")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")

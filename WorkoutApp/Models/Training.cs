@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace WorkoutApp.Models
 {
@@ -16,7 +17,10 @@ namespace WorkoutApp.Models
 
         public short DurationMinutes { get; set; } //minutes
 
+        [JsonIgnore]
         public virtual List<TrainingPlanTraining> TrainingPlanTraining { get; set; }
+
+        [JsonIgnore]
         public virtual List<TrainingExercises> TrainingExercises { get; set; }
 
         public int Likes { get; set; }

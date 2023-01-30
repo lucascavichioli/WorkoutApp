@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Data;
 using WorkoutApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WorkoutApp.Controllers
 {
@@ -37,13 +38,27 @@ namespace WorkoutApp.Controllers
             return _mapper.Map<List<ReadTrainingExercisesDTO>>(_context.TrainingExercises.Skip(skip).Take(take));
         }
 
+        [ResponseCache(CacheProfileName = "Default86400")]
         [HttpGet("{id}")]
         public IActionResult GetTrainingExerciseById(Guid id)
         {
             var trainingExercise = _context.TrainingExercises.FirstOrDefault(trainingExercise => trainingExercise.Id == id);
-            if (trainingExercise == null) return NotFound();
+            if (trainingExercise == null) {
+                return GetTrainingExerciseByTrainingId(id);
+            } 
 
             var trainingExerciseDTO = _mapper.Map<ReadTrainingExercisesDTO>(trainingExercise);
+
+            return Ok(trainingExerciseDTO);
+        }
+
+        [HttpGet("{trainingId}")]
+        private IActionResult GetTrainingExerciseByTrainingId(Guid trinaingId)
+        {
+            var trainingExercise = _context.TrainingExercises.Where(trainingExercise => trainingExercise.TrainingFK == trinaingId);
+            if (trainingExercise == null) return NotFound();
+
+            var trainingExerciseDTO = _mapper.Map<List<ReadTrainingExercisesDTO>>(trainingExercise);
 
             return Ok(trainingExerciseDTO);
         }

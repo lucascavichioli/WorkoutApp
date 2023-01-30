@@ -9,7 +9,6 @@ using WorkoutApp.Models;
 namespace WorkoutApp.Controllers
 {
     [ApiController]
-    [ResponseCache(CacheProfileName = "Default86400")]
     [Route("[controller]")]
     public class TrainingPlanTrainingController : ControllerBase
     {
@@ -33,12 +32,14 @@ namespace WorkoutApp.Controllers
             return CreatedAtAction(nameof(GetTrainingPlanTrainingById), new { trainingPlanId = trainingPlanTraining.TrainingPlanFK }, trainingPlanTraining);
         }
 
+        [ResponseCache(CacheProfileName = "Default86400")]
         [HttpGet]
         public IEnumerable<ReadTrainingPlanTrainingDTO> GetTrainingPlanTraining([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
             return _mapper.Map<List<ReadTrainingPlanTrainingDTO>>(_context.TrainingPlanTraining.Skip(skip).Take(take));
         }
-
+        
+        [ResponseCache(CacheProfileName = "Default86400")]
         [HttpGet("{trainingPlanId}")]
         public IActionResult GetTrainingPlanTrainingById(Guid trainingPlanId)
         {

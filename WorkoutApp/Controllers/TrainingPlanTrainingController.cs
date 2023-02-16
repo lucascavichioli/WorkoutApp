@@ -29,7 +29,7 @@ namespace WorkoutApp.Controllers
             TrainingPlanTraining trainingPlanTraining = _mapper.Map<TrainingPlanTraining>(trainingPlanTrainingDTO);
             _context.TrainingPlanTraining.Add(trainingPlanTraining);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetTrainingPlanTrainingById), new { trainingPlanId = trainingPlanTraining.TrainingPlanFK }, trainingPlanTraining);
+            return CreatedAtAction(nameof(GetTrainingPlanTrainingUnique), new { id = trainingPlanTraining.Id }, trainingPlanTraining);
         }
 
         [ResponseCache(CacheProfileName = "Default86400")]
@@ -38,7 +38,19 @@ namespace WorkoutApp.Controllers
         {
             return _mapper.Map<List<ReadTrainingPlanTrainingDTO>>(_context.TrainingPlanTraining.Skip(skip).Take(take));
         }
-        
+
+        [ResponseCache(CacheProfileName = "Default86400")]
+        [HttpGet("unique/{id}")]
+        public IActionResult GetTrainingPlanTrainingUnique(Guid id)
+        {
+            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.Id == id);
+            if (trainingPlanTraining == null) return NotFound();
+
+            var trainingPlanTrainingDTO = _mapper.Map<List<ReadTrainingPlanTrainingDTO>>(trainingPlanTraining);
+
+            return Ok(trainingPlanTrainingDTO);
+        }
+
         [ResponseCache(CacheProfileName = "Default86400")]
         [HttpGet("{trainingPlanId}")]
         public IActionResult GetTrainingPlanTrainingById(Guid trainingPlanId)
@@ -56,20 +68,20 @@ namespace WorkoutApp.Controllers
             return Ok(trainingPlanTrainingDTO);
         }
 
-        [HttpPut("{trainingPlanId}/{trainingId}")]
-        public IActionResult UpdateTrainingPlanTraining(Guid trainingPlanId, Guid trainingId, [FromBody] UpdateTrainingPlanTrainingDTO trainingPlanTrainingDTO)
+        [HttpPut("{id}")]
+        public IActionResult UpdateTrainingPlanTraining(Guid id, [FromBody] UpdateTrainingPlanTrainingDTO trainingPlanTrainingDTO)
         {
-            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId && trainingPlanTraining.TrainingFK == trainingId);
+            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.Id == id);
             if (trainingPlanTraining == null) return NotFound();
             _mapper.Map(trainingPlanTrainingDTO, trainingPlanTraining);
             _context.SaveChanges();
             return NoContent();
         }
 
-        [HttpPatch("{trainingPlanId}/{trainingId}")]
-        public IActionResult PartialUpdateTrainingPlanTraining(Guid trainingPlanId, Guid trainingId, JsonPatchDocument<UpdateTrainingPlanTrainingDTO> patch)
+        [HttpPatch("{id}")]
+        public IActionResult PartialUpdateTrainingPlanTraining(Guid id, JsonPatchDocument<UpdateTrainingPlanTrainingDTO> patch)
         {
-            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId && trainingPlanTraining.TrainingFK == trainingId);
+            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.Id == id);
             if (trainingPlanTraining == null) return NotFound();
 
             var trainingPlanTrainingForUpdate = _mapper.Map<UpdateTrainingPlanTrainingDTO>(trainingPlanTraining);
@@ -85,11 +97,10 @@ namespace WorkoutApp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{trainingPlanId}/{trainingId}")]
-
-        public IActionResult DeleteTrainingPlanTraining(Guid trainingPlanId, Guid trainingId)
+        [HttpDelete("{id}")]
+        public IActionResult DeleteTrainingPlanTraining(Guid id)
         {
-            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId && trainingPlanTraining.TrainingFK == trainingId);
+            var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.Id == id);
             if (trainingPlanTraining == null) return NotFound();
 
             _context.Remove(trainingPlanTraining);

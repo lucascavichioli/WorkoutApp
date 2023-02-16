@@ -23,9 +23,6 @@ namespace WorkoutApp.Data
                 .WithMany(trainingPlanTraining => trainingPlanTraining.TrainingPlanTraining)
                 .HasForeignKey(trainingPlanTraining => trainingPlanTraining.TrainingFK);
 
-            builder.Entity<TrainingPlanTraining>()
-            .HasKey(x => new { x.TrainingPlanFK, x.TrainingFK } );
-
             builder.Entity<TrainingExercises>()
                 .HasOne(trainingExercises => trainingExercises.Training)
                 .WithMany(training => training.TrainingExercises)

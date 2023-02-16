@@ -23,7 +23,7 @@ namespace WorkoutApp.Controllers
         /// <summary>
         /// Adiciona um plano de treino ao banco de dados
         /// </summary>
-        /// <param name="CreateTrainingPlanDTO">Objeto com os campos necessários para criação de um filme</param>
+        /// <param name="CreateTrainingPlanDTO">Objeto com os campos necessários para criação de um plano de treino</param>
         /// <returns>IActionResult</returns>
         /// <response code="201">Caso inserção seja feita com sucesso</response>
 

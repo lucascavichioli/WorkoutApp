@@ -11,8 +11,8 @@ using WorkoutApp.Data;
 namespace WorkoutApp.Migrations
 {
     [DbContext(typeof(WorkoutAppContext))]
-    [Migration("20230117033024_Alterando relacionamento da tabela TrainingPlanTraining")]
-    partial class AlterandorelacionamentodatabelaTrainingPlanTraining
+    [Migration("20230216025726_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,20 +34,8 @@ namespace WorkoutApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("DurationMinutes")
-                        .HasColumnType("int");
-
                     b.Property<string>("LinkVideo")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Reps")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestSeconds")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sets")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -127,6 +115,16 @@ namespace WorkoutApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reps")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RestSeconds")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sets")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -210,10 +208,8 @@ namespace WorkoutApp.Migrations
 
             modelBuilder.Entity("WorkoutApp.Models.TrainingPlanTraining", b =>
                 {
-                    b.Property<Guid>("TrainingPlanFK")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("TrainingFK")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -228,12 +224,20 @@ namespace WorkoutApp.Migrations
                     b.Property<Guid>("TraceId")
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("TrainingFK")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("TrainingPlanFK")
+                        .HasColumnType("char(36)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("TrainingPlanFK", "TrainingFK");
+                    b.HasKey("Id");
 
                     b.HasIndex("TrainingFK");
+
+                    b.HasIndex("TrainingPlanFK");
 
                     b.ToTable("TrainingPlanTraining");
                 });

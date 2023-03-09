@@ -2,6 +2,7 @@
 {
     public class ReadTrainingExercisesDTO
     {
+        public Guid Id { get; set; }
         public Guid TrainingFK { get; set; }
         public Guid ExercisesFK { get; set; }
         public string Title { get; set; }

@@ -4,6 +4,7 @@ namespace WorkoutApp.Data.Dtos
 {
     public class ReadTrainingPlanTrainingDTO
     {
+        public Guid Id { get; set; }
         public Guid TrainingPlanFK { get; set; }
         public Guid TrainingFK { get; set; }
         public int Order { get; set; }

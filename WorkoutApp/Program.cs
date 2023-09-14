@@ -2,10 +2,27 @@ using WorkoutApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Hosting;
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+var environment = builder.Environment;
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
+
+builder.Services.AddSingleton(configuration);
 
 var conn = builder.Configuration.GetConnectionString("WorkoutConnection");
 
@@ -20,10 +37,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers(options =>
 {
-    options.CacheProfiles.Add("Default86400",
+    options.CacheProfiles.Add("DefaultCache",
         new CacheProfile()
         {
-            Duration = 86400
+            Duration = 172800
         });
 })
 .AddNewtonsoftJson(options =>
@@ -31,8 +48,9 @@ builder.Services.AddControllers(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }
 );
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkoutAppAPI", Version = "v1" });
@@ -56,17 +74,19 @@ if (app.Environment.IsDevelopment())
 app.UseCors(c => {
     c.AllowAnyHeader();
     c.AllowAnyMethod();
-    c.AllowAnyOrigin();
+    /*c.WithOrigins("https://workout-site.vercel.app");*/
+    c.WithOrigins("http://localhost:3000");
 });
 
 app.UseResponseCaching();
 
 app.MapHealthChecks("/healthz");
 
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseMiddleware<ApiKeyMiddleware>();
 
 app.MapControllers();
 
 app.Run();
+
+
+

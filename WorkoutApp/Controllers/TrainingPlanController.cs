@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Data;
@@ -36,16 +37,17 @@ namespace WorkoutApp.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetTrainingPlanById), new { id = trainingPlan.Id }, trainingPlan);
         }
-
-        [ResponseCache(CacheProfileName = "Default86400")]
+        
         [HttpGet]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         public IEnumerable<ReadTrainingPlanDTO> GetTrainingPlan([FromQuery] int skip = 0, [FromQuery] int take = 50) 
         {
             return _mapper.Map<List<ReadTrainingPlanDTO>>(_context.TrainingPlan.Skip(skip).Take(take));
         }
 
-        [ResponseCache(CacheProfileName = "Default86400")]
+        
         [HttpGet("{id}")]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         public IActionResult GetTrainingPlanById(Guid id)
         {
             var plan = _context.TrainingPlan.FirstOrDefault(plan => plan.Id == id);
@@ -96,7 +98,7 @@ namespace WorkoutApp.Controllers
             _context.SaveChanges();
             return NoContent();
         }
-
+       
 
     }
 }

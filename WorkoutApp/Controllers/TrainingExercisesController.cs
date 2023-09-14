@@ -6,6 +6,7 @@ using WorkoutApp.Data.Dtos;
 using WorkoutApp.Data;
 using WorkoutApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WorkoutApp.Controllers
 {
@@ -31,15 +32,17 @@ namespace WorkoutApp.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetTrainingExerciseById), new { id = trainingExercise.Id }, trainingExercise);
         }
-
+       
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<ReadTrainingExercisesDTO> GetTrainingExercise([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
             return _mapper.Map<List<ReadTrainingExercisesDTO>>(_context.TrainingExercises.Skip(skip).Take(take));
         }
 
-        [ResponseCache(CacheProfileName = "Default86400")]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetTrainingExerciseById(Guid id)
         {
             var trainingExercise = _context.TrainingExercises.FirstOrDefault(trainingExercise => trainingExercise.Id == id);
@@ -53,6 +56,7 @@ namespace WorkoutApp.Controllers
         }
 
         [HttpGet("{trainingId}")]
+        [AllowAnonymous]
         private IActionResult GetTrainingExerciseByTrainingId(Guid trinaingId)
         {
             var trainingExercise = _context.TrainingExercises.Where(trainingExercise => trainingExercise.TrainingFK == trinaingId);
@@ -103,5 +107,6 @@ namespace WorkoutApp.Controllers
             _context.SaveChanges();
             return NoContent();
         }
+       
     }
 }

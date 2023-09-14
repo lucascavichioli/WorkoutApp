@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,15 +33,16 @@ namespace WorkoutApp.Controllers
             return CreatedAtAction(nameof(GetTrainingPlanTrainingUnique), new { id = trainingPlanTraining.Id }, trainingPlanTraining);
         }
 
-        [ResponseCache(CacheProfileName = "Default86400")]
         [HttpGet]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         public IEnumerable<ReadTrainingPlanTrainingDTO> GetTrainingPlanTraining([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
             return _mapper.Map<List<ReadTrainingPlanTrainingDTO>>(_context.TrainingPlanTraining.Skip(skip).Take(take));
         }
 
-        [ResponseCache(CacheProfileName = "Default86400")]
+        
         [HttpGet("unique/{id}")]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         public IActionResult GetTrainingPlanTrainingUnique(Guid id)
         {
             var trainingPlanTraining = _context.TrainingPlanTraining.FirstOrDefault(trainingPlanTraining => trainingPlanTraining.Id == id);
@@ -51,8 +53,8 @@ namespace WorkoutApp.Controllers
             return Ok(trainingPlanTrainingDTO);
         }
 
-        [ResponseCache(CacheProfileName = "Default86400")]
         [HttpGet("{trainingPlanId}")]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         public IActionResult GetTrainingPlanTrainingById(Guid trainingPlanId)
         {
             //var trainingPlanTraining = _context.TrainingPlanTraining.Where(trainingPlanTraining => trainingPlanTraining.TrainingPlanFK == trainingPlanId);

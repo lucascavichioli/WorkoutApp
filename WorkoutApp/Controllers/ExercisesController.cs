@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Data;
 using WorkoutApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WorkoutApp.Controllers
 {
@@ -30,7 +31,7 @@ namespace WorkoutApp.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetExerciseById), new { id = exercise.Id }, exercise);
         }
-
+        
         [HttpGet]
         public IEnumerable<ReadExerciseDTO> GetExercise([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
@@ -38,6 +39,7 @@ namespace WorkoutApp.Controllers
         }
 
         [HttpGet("{id}")]
+        [ResponseCache(CacheProfileName = "DefaultCache")]
         public IActionResult GetExerciseById(Guid id)
         {
             var exercise = _context.Exercises.FirstOrDefault(exercise => exercise.Id == id);
@@ -88,5 +90,6 @@ namespace WorkoutApp.Controllers
             _context.SaveChanges();
             return NoContent();
         }
+        
     }
 }

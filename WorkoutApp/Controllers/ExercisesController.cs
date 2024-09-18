@@ -6,6 +6,8 @@ using WorkoutApp.Data.Dtos;
 using WorkoutApp.Data;
 using WorkoutApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using WorkoutApp.Infrastructure.Persistence;
+using WorkoutApp.Application.InputViewModels.ExercisesInputModels;
 
 namespace WorkoutApp.Controllers
 {
@@ -24,11 +26,11 @@ namespace WorkoutApp.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult AddExercise([FromBody] CreateExerciseDTO exerciseDTO)
+        public IActionResult AddExercise([FromBody] CreateExercisesInputModel exerciseDTO)
         {
             Exercises exercise = _mapper.Map<Exercises>(exerciseDTO);
-            _context.Exercises.Add(exercise);
-            _context.SaveChanges();
+            //_context.Exercises.Add(exerciseDTO);
+           // _context.SaveChanges();
             return CreatedAtAction(nameof(GetExerciseById), new { id = exercise.Id }, exercise);
         }
         

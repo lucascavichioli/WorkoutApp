@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WorkoutApp.Models;
+using WorkoutApp.Core.Entities;
 
-namespace WorkoutApp.Data
+namespace WorkoutApp.Infrastructure.Persistence
 {
     public class WorkoutAppContext : DbContext
     {
@@ -10,9 +10,10 @@ namespace WorkoutApp.Data
         {
             
         }
-
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             builder.Entity<TrainingPlanTraining>()
                 .HasOne(trainingPlanTraining => trainingPlanTraining.TrainingPlan)
                 .WithMany(trainingPlan => trainingPlan.TrainingPlanTraining)

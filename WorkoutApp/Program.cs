@@ -1,18 +1,20 @@
-using WorkoutApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.AspNetCore.Hosting;
+using Asp.Versioning;
+using WorkoutApp.Infrastructure.Persistence;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddApiVersioning(o => {
+    o.DefaultApiVersion = new ApiVersion(1);
+    o.ReportApiVersions = true;
+    o.AssumeDefaultVersionWhenUnspecified = true;
+
+    o.ApiVersionReader = new UrlSegmentApiVersionReader();
+});
 
 var environment = builder.Environment;
 var configuration = new ConfigurationBuilder()
@@ -24,10 +26,10 @@ var configuration = new ConfigurationBuilder()
 
 builder.Services.AddSingleton(configuration);
 
-var conn = builder.Configuration.GetConnectionString("WorkoutConnection");
+var conn = builder.Configuration.GetConnectionString("WorkoutConnectionSQLServer");
 
 builder.Services.AddDbContext<WorkoutAppContext>(opts =>
-    opts.UseMySql(conn, ServerVersion.AutoDetect(conn))
+    opts.UseSqlServer(conn)
 );
 
 builder.Services.AddHealthChecks();
@@ -74,8 +76,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(c => {
     c.AllowAnyHeader();
     c.AllowAnyMethod();
-    /*c.WithOrigins("https://workout-site.vercel.app");*/
-    c.WithOrigins("http://localhost:3000");
+    c.WithOrigins("https://workout-site.vercel.app");
+    //c.WithOrigins("http://localhost:3000");
 });
 
 app.UseResponseCaching();

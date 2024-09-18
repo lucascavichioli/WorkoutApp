@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WorkoutApp.Data;
 using WorkoutApp.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace WorkoutApp.Migrations
+namespace WorkoutApp.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(WorkoutAppContext))]
     partial class WorkoutAppContextModelSnapshot : ModelSnapshot
@@ -18,12 +17,12 @@ namespace WorkoutApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.27")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("WorkoutApp.Models.Exercises", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.Exercises", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +53,7 @@ namespace WorkoutApp.Migrations
                     b.ToTable("Exercises");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.Training", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.Training", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +90,7 @@ namespace WorkoutApp.Migrations
                     b.ToTable("Training");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingExercises", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.TrainingExercises", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -151,7 +150,7 @@ namespace WorkoutApp.Migrations
                     b.ToTable("TrainingExercises");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingPlan", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.TrainingPlan", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,7 +207,7 @@ namespace WorkoutApp.Migrations
                     b.ToTable("TrainingPlan");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingPlanTraining", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.TrainingPlanTraining", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -244,15 +243,15 @@ namespace WorkoutApp.Migrations
                     b.ToTable("TrainingPlanTraining");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingExercises", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.TrainingExercises", b =>
                 {
-                    b.HasOne("WorkoutApp.Models.Exercises", "Exercises")
+                    b.HasOne("WorkoutApp.Core.Entities.Exercises", "Exercises")
                         .WithMany("TrainingExercises")
                         .HasForeignKey("ExercisesFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WorkoutApp.Models.Training", "Training")
+                    b.HasOne("WorkoutApp.Core.Entities.Training", "Training")
                         .WithMany("TrainingExercises")
                         .HasForeignKey("TrainingFK")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -263,15 +262,15 @@ namespace WorkoutApp.Migrations
                     b.Navigation("Training");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingPlanTraining", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.TrainingPlanTraining", b =>
                 {
-                    b.HasOne("WorkoutApp.Models.Training", "Training")
+                    b.HasOne("WorkoutApp.Core.Entities.Training", "Training")
                         .WithMany("TrainingPlanTraining")
                         .HasForeignKey("TrainingFK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WorkoutApp.Models.TrainingPlan", "TrainingPlan")
+                    b.HasOne("WorkoutApp.Core.Entities.TrainingPlan", "TrainingPlan")
                         .WithMany("TrainingPlanTraining")
                         .HasForeignKey("TrainingPlanFK")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -282,19 +281,19 @@ namespace WorkoutApp.Migrations
                     b.Navigation("TrainingPlan");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.Exercises", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.Exercises", b =>
                 {
                     b.Navigation("TrainingExercises");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.Training", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.Training", b =>
                 {
                     b.Navigation("TrainingExercises");
 
                     b.Navigation("TrainingPlanTraining");
                 });
 
-            modelBuilder.Entity("WorkoutApp.Models.TrainingPlan", b =>
+            modelBuilder.Entity("WorkoutApp.Core.Entities.TrainingPlan", b =>
                 {
                     b.Navigation("TrainingPlanTraining");
                 });

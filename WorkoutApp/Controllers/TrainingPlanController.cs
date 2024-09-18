@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Data;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Models;
+using WorkoutApp.Infrastructure.Persistence;
 
 namespace WorkoutApp.Controllers
 {
@@ -33,8 +34,8 @@ namespace WorkoutApp.Controllers
         public IActionResult AddTrainingPlan([FromBody] CreateTrainingPlanDTO trainingPlanDTO) 
         {
             TrainingPlan trainingPlan = _mapper.Map<TrainingPlan>(trainingPlanDTO);
-            _context.TrainingPlan.Add(trainingPlan);
-            _context.SaveChanges();
+            //_context.TrainingPlan.Add(trainingPlan);
+            //_context.SaveChanges();
             return CreatedAtAction(nameof(GetTrainingPlanById), new { id = trainingPlan.Id }, trainingPlan);
         }
         

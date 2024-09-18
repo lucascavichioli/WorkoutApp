@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using WorkoutApp.Data;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Models;
+using WorkoutApp.Infrastructure.Persistence;
 
 namespace WorkoutApp.Controllers
 {
@@ -28,8 +29,8 @@ namespace WorkoutApp.Controllers
         public IActionResult AddTrainingPlanTraining([FromBody] CreateTrainingPlanTrainingDTO trainingPlanTrainingDTO)
         {
             TrainingPlanTraining trainingPlanTraining = _mapper.Map<TrainingPlanTraining>(trainingPlanTrainingDTO);
-            _context.TrainingPlanTraining.Add(trainingPlanTraining);
-            _context.SaveChanges();
+            //_context.TrainingPlanTraining.Add(trainingPlanTraining);
+            //_context.SaveChanges();
             return CreatedAtAction(nameof(GetTrainingPlanTrainingUnique), new { id = trainingPlanTraining.Id }, trainingPlanTraining);
         }
 

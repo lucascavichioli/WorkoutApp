@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Data;
 using WorkoutApp.Data.Dtos;
 using WorkoutApp.Models;
+using WorkoutApp.Infrastructure.Persistence;
 
 namespace WorkoutApp.Controllers
 {
@@ -27,8 +26,8 @@ namespace WorkoutApp.Controllers
         public IActionResult AddTraining([FromBody] CreateTrainingDTO trainingDTO)
         {
             Training training = _mapper.Map<Training>(trainingDTO);
-            _context.Training.Add(training);
-            _context.SaveChanges();
+           //_context.Training.Add(training);
+            //_context.SaveChanges();
             return CreatedAtAction(nameof(GetTrainingById), new { id = training.Id }, training);
         }
        

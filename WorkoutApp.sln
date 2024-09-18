@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutApp", "WorkoutApp\WorkoutApp.csproj", "{C7C6AD3E-4C3F-43B0-A897-0D9158E0694A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutApp", "WorkoutApp\WorkoutApp.csproj", "{C7C6AD3E-4C3F-43B0-A897-0D9158E0694A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutApp.Core", "WorkoutApp.Core\WorkoutApp.Core.csproj", "{69FE3979-D980-467D-9B8D-F5A25EE92A19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutApp.Application", "WorkoutApp.Application\WorkoutApp.Application.csproj", "{5879F87A-CCCA-422F-A71B-06AB27B43F04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutApp.Infrastructure", "WorkoutApp.Infrastructure\WorkoutApp.Infrastructure.csproj", "{A85B2873-0626-43E3-A48E-7DE40D4C3037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{C7C6AD3E-4C3F-43B0-A897-0D9158E0694A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7C6AD3E-4C3F-43B0-A897-0D9158E0694A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7C6AD3E-4C3F-43B0-A897-0D9158E0694A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69FE3979-D980-467D-9B8D-F5A25EE92A19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69FE3979-D980-467D-9B8D-F5A25EE92A19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69FE3979-D980-467D-9B8D-F5A25EE92A19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69FE3979-D980-467D-9B8D-F5A25EE92A19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5879F87A-CCCA-422F-A71B-06AB27B43F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5879F87A-CCCA-422F-A71B-06AB27B43F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5879F87A-CCCA-422F-A71B-06AB27B43F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5879F87A-CCCA-422F-A71B-06AB27B43F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A85B2873-0626-43E3-A48E-7DE40D4C3037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A85B2873-0626-43E3-A48E-7DE40D4C3037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A85B2873-0626-43E3-A48E-7DE40D4C3037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A85B2873-0626-43E3-A48E-7DE40D4C3037}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

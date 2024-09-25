@@ -1,6 +1,6 @@
 ﻿using WorkoutApp.Core.Entities;
 
-namespace WorkoutApp.Application.ViewViewModels.TrainingViewModels
+namespace WorkoutApp.Application.Models.ViewViewModels.TrainingViewModels
 {
     public class TrainingViewModel
     {

@@ -1,4 +1,4 @@
-﻿namespace WorkoutApp.Application.InputViewModels.TrainingPlanInputModels
+﻿namespace WorkoutApp.Application.Models.InputViewModels.TrainingPlanInputModels
 {
     public class CreateTrainingPlanInputModel
     {

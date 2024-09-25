@@ -28,10 +28,6 @@ namespace WorkoutApp.Core.Entities
         public int Comments { get; set; } 
         public int Likes { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public Guid TraceId { get; set; }
-
         [JsonIgnore]
         public virtual List<TrainingPlanTraining> TrainingPlanTraining { get; set; }
 

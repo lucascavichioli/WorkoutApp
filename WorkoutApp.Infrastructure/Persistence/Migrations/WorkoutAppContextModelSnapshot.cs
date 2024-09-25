@@ -35,6 +35,9 @@ namespace WorkoutApp.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LinkVideo")
                         .HasColumnType("nvarchar(max)");
 
@@ -71,6 +74,9 @@ namespace WorkoutApp.Infrastructure.Persistence.Migrations
 
                     b.Property<short>("DurationMinutes")
                         .HasColumnType("smallint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
@@ -111,6 +117,9 @@ namespace WorkoutApp.Infrastructure.Persistence.Migrations
 
                     b.Property<Guid>("ExercisesFK")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
@@ -176,6 +185,9 @@ namespace WorkoutApp.Infrastructure.Persistence.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<short>("Length")
                         .HasColumnType("smallint");
 
@@ -218,6 +230,9 @@ namespace WorkoutApp.Infrastructure.Persistence.Migrations
 
                     b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");

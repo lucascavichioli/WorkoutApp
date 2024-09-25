@@ -3,12 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace WorkoutApp.Core.Entities
 {
-    public class TrainingExercises
+    public class TrainingExercises : BaseEntity
     {
-        [Key]
-        [Required]
-        public Guid Id { get; set; }
-
         [JsonIgnore]
         public virtual Training Training { get; set; }
         [Required]
@@ -34,10 +30,6 @@ namespace WorkoutApp.Core.Entities
         public int Comments { get; set; }
 
         public int Order { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public Guid TraceId { get; set; }
 
     }
 }

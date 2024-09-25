@@ -27,9 +27,14 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddSingleton(configuration);
 
 var conn = builder.Configuration.GetConnectionString("WorkoutConnectionSQLServer");
+var connAuth = builder.Configuration.GetConnectionString("AuthenticationConnectionSQLServer"); 
 
 builder.Services.AddDbContext<WorkoutAppContext>(opts =>
     opts.UseSqlServer(conn)
+);
+
+builder.Services.AddDbContext<WorkoutAppAuthContext>(opts =>
+    opts.UseSqlServer(connAuth)
 );
 
 builder.Services.AddHealthChecks();
@@ -64,6 +69,14 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddCors();
 builder.Services.AddResponseCaching();
 
+/*Autenticação*/
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services
+    .AddIdentityApiEndpoints<User>()
+    .AddEntityFrameworkStores<WorkoutAppAuthContext>();
+/*-----------*/
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -84,7 +97,8 @@ app.UseResponseCaching();
 
 app.MapHealthChecks("/healthz");
 
-app.UseMiddleware<ApiKeyMiddleware>();
+//app.UseMiddleware<ApiKeyMiddleware>();
+app.MapIdentityApi<User>();
 
 app.MapControllers();
 

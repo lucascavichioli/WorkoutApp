@@ -17,5 +17,12 @@
             LinkVideo = linkVideo;
             UpdatedAt = DateTime.Now;
         }
+
+        public void Update(string title, string description, string linkVideo)
+        {
+            Title = title;
+            Description = description;
+            LinkVideo = linkVideo;
+        }
     }
 }

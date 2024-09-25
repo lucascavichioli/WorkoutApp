@@ -1,13 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Data.Dtos;
-using WorkoutApp.Data;
-using WorkoutApp.Models;
-using Microsoft.AspNetCore.Authorization;
-using WorkoutApp.Infrastructure.Persistence;
-using WorkoutApp.Application.InputViewModels.ExercisesInputModels;
+using WorkoutApp.Application.Models.InputViewModels.ExercisesInputModels;
+using WorkoutApp.Application.Services.Exercises;
 
 namespace WorkoutApp.Controllers
 {
@@ -15,41 +10,40 @@ namespace WorkoutApp.Controllers
     [ApiController]
     public class ExercisesController : ControllerBase
     {
-        private WorkoutAppContext _context;
-        private IMapper _mapper;
-
-        public ExercisesController(WorkoutAppContext context, IMapper mapper)
+        private readonly IExerciseService _exerciseService;
+        public ExercisesController(IExerciseService exerciseService)
         {
-            _context = context;
-            _mapper = mapper;
+            _exerciseService = exerciseService;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult AddExercise([FromBody] CreateExercisesInputModel exerciseDTO)
+        public async Task<IActionResult> AddExercise(CreateExercisesInputModel exerciseInputModel)
         {
-            Exercises exercise = _mapper.Map<Exercises>(exerciseDTO);
-            //_context.Exercises.Add(exerciseDTO);
-           // _context.SaveChanges();
-            return CreatedAtAction(nameof(GetExerciseById), new { id = exercise.Id }, exercise);
+            var result = await _exerciseService.AddAsync(exerciseInputModel);
+
+            return CreatedAtAction(nameof(GetExerciseById), new { id = result.Data }, result);
         }
         
         [HttpGet]
-        public IEnumerable<ReadExerciseDTO> GetExercise([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        public async Task<IActionResult> GetExercise([FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
-            return _mapper.Map<List<ReadExerciseDTO>>(_context.Exercises.Skip(skip).Take(take));
+            var exercises = await _exerciseService.GetAllAsync(skip, take);
+            if(!exercises.IsSuccess)
+                return NotFound();
+
+            return Ok(exercises);
         }
 
         [HttpGet("{id}")]
         [ResponseCache(CacheProfileName = "DefaultCache")]
-        public IActionResult GetExerciseById(Guid id)
+        public async Task<IActionResult> GetExerciseById(Guid id)
         {
-            var exercise = _context.Exercises.FirstOrDefault(exercise => exercise.Id == id);
-            if (exercise == null) return NotFound();
+            var exercise = await _exerciseService.GetByIdAsync(id);
+            if(!exercise.IsSuccess)
+                return NotFound();
 
-            var exerciceDTO = _mapper.Map<ReadExerciseDTO>(exercise);
-
-            return Ok(exerciceDTO);
+            return Ok(exercise);
         }
 
         [HttpPut("{id}")]

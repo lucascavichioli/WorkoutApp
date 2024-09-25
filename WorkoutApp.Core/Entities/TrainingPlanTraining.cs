@@ -3,13 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace WorkoutApp.Core.Entities
 {
-    public class TrainingPlanTraining
+    public class TrainingPlanTraining : BaseEntity
     {
-
-        [Key]
-        [Required]
-        public Guid Id { get; set; }
-
         [JsonIgnore]
         public virtual TrainingPlan TrainingPlan { get; set; }
         
@@ -25,10 +20,5 @@ namespace WorkoutApp.Core.Entities
         public int Order { get; set; }
 
         public int DayOfWeek { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-
-        public Guid TraceId { get; set; }
     }
 }

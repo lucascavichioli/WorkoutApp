@@ -1,8 +1,8 @@
 ﻿using WorkoutApp.Core.Entities;
 
-namespace WorkoutApp.Application.InputViewModels.TrainingInputModels
+namespace WorkoutApp.Application.Models.InputViewModels.TrainingInputModels
 {
-    public class UpdateTrainingInputModel   
+    public class CreateTrainingInputModel
     {
         public string Title { get; set; }
 

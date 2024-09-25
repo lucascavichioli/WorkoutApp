@@ -1,8 +1,8 @@
 ﻿using WorkoutApp.Core.Entities;
 
-namespace WorkoutApp.Application.ViewViewModels.ExercisesViewModels
+namespace WorkoutApp.Application.Models.ViewViewModels.ExercisesViewModels
 {
-    public class ExercisesViewModel
+    public class ExercisesViewModel : ResultViewModel
     {
         public ExercisesViewModel(string title, string description, string? linkVideo)
         {

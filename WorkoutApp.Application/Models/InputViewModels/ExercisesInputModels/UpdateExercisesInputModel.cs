@@ -1,6 +1,6 @@
 ﻿using WorkoutApp.Core.Entities;
 
-namespace WorkoutApp.Application.InputViewModels.ExercisesInputModels
+namespace WorkoutApp.Application.Models.InputViewModels.ExercisesInputModels
 {
     public class UpdateExercisesInputModel
     {

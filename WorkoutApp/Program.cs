@@ -4,6 +4,9 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Asp.Versioning;
 using WorkoutApp.Infrastructure.Persistence;
+using WorkoutApp.Application.Services.Exercises;
+using WorkoutApp.Application.Services.Training;
+using WorkoutApp.Application.Services.TrainingPlan;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +39,10 @@ builder.Services.AddDbContext<WorkoutAppContext>(opts =>
 builder.Services.AddDbContext<WorkoutAppAuthContext>(opts =>
     opts.UseSqlServer(connAuth)
 );
+
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<ITrainingService, TrainingService>();
+builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
 
 builder.Services.AddHealthChecks();
 
@@ -103,6 +110,3 @@ app.MapIdentityApi<User>();
 app.MapControllers();
 
 app.Run();
-
-
-

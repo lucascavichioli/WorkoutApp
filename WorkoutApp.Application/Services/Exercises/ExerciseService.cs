@@ -26,9 +26,9 @@ namespace WorkoutApp.Application.Services.Exercises
             var exercise = await _context.Exercises.SingleOrDefaultAsync(e => e.Id == id);
             if (exercise is null)
                 return ResultViewModel<ExercisesViewModel>.Error("Exercício não existe");
-            
+
             var model = ExercisesViewModel.FromEntity(exercise);
-            
+
             return ResultViewModel<ExercisesViewModel>.Success(model);
         }
         public async Task<ResultViewModel<Guid>> AddAsync(CreateExercisesInputModel model)

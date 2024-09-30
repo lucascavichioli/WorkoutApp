@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
-using WorkoutApp.Data;
-using WorkoutApp.Data.Dtos;
-using WorkoutApp.Models;
-using WorkoutApp.Infrastructure.Persistence;
+﻿using Microsoft.AspNetCore.Mvc;
+using WorkoutApp.Application.Services.Training;
+using WorkoutApp.Application.Models.InputViewModels.TrainingInputModels;
 
 namespace WorkoutApp.Controllers
 {
@@ -12,81 +8,63 @@ namespace WorkoutApp.Controllers
     [ApiController]
     public class TrainingController : ControllerBase
     {
-        private WorkoutAppContext _context;
-        private IMapper _mapper;
+        private readonly ITrainingService _trainingService;
 
-        public TrainingController(WorkoutAppContext context, IMapper mapper)
+        public TrainingController(ITrainingService trainingService)
         {
-            _context = context;
-            _mapper = mapper;
+            _trainingService = trainingService;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult AddTraining([FromBody] CreateTrainingDTO trainingDTO)
+        public async Task<IActionResult> AddTraining(CreateTrainingInputModel trainingInputModel)
         {
-            Training training = _mapper.Map<Training>(trainingDTO);
-           //_context.Training.Add(training);
-            //_context.SaveChanges();
-            return CreatedAtAction(nameof(GetTrainingById), new { id = training.Id }, training);
+            var result = await _trainingService.AddAsync(trainingInputModel);
+
+            return CreatedAtAction(nameof(GetTrainingById), new { id = result.Data }, result);
         }
        
         [HttpGet]
         [ResponseCache(CacheProfileName = "DefaultCache")]
-        public IEnumerable<ReadTrainingDTO> GetTraining([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        public async Task<IActionResult> GetTraining(int skip = 0, int take = 50)
         {
-            return _mapper.Map<List<ReadTrainingDTO>>(_context.Training.Skip(skip).Take(take));
+            var training = await _trainingService.GetAllAsync(skip, take);
+            if (!training.IsSuccess)
+                return NotFound();
+
+            return Ok(training);
         }
 
         [HttpGet("{id}")]
         [ResponseCache(CacheProfileName = "DefaultCache")]
-        public IActionResult GetTrainingById(Guid id)
+        public async Task<IActionResult> GetTrainingById(Guid id)
         {
-            var training = _context.Training.FirstOrDefault(training => training.Id == id);
-            if (training == null) return NotFound();
+            var training = await _trainingService.GetByIdAsync(id);
+            if (!training.IsSuccess)
+                return NotFound(training.Message);
 
-            var trainingDTO = _mapper.Map<ReadTrainingDTO>(training);
-
-            return Ok(trainingDTO);
+            return Ok(training);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTraining(Guid id, [FromBody] UpdateTrainingDTO trainingDTO)
+        public async Task<IActionResult> UpdateTraining(Guid id, UpdateTrainingInputModel model)
         {
-            var training = _context.Training.FirstOrDefault(training => training.Id == id);
-            if (training == null) return NotFound();
-            _mapper.Map(trainingDTO, training);
-            _context.SaveChanges();
-            return NoContent();
-        }
+            var training = await _trainingService.GetByIdAsync(id);
+            if (!training.IsSuccess)
+                return NotFound(training.Message);
 
-        [HttpPatch("{id}")]
-        public IActionResult PartialUpdateTraining(Guid id, JsonPatchDocument<UpdateTrainingDTO> patch)
-        {
-            var training = _context.Training.FirstOrDefault(training => training.Id == id);
-            if (training == null) return NotFound();
-
-            var trainingForUpdate = _mapper.Map<UpdateTrainingDTO>(training);
-            patch.ApplyTo(trainingForUpdate, ModelState);
-
-            if (!TryValidateModel(trainingForUpdate))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(trainingForUpdate, training);
-            _context.SaveChanges();
-            return NoContent();
+            var result = await _trainingService.Update(id, model);
+            return Ok(result.Message);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteTraining(Guid id)
+        public async Task<IActionResult> DeleteTraining(Guid id)
         {
-            var training = _context.Training.FirstOrDefault(training => training.Id == id);
-            if (training == null) return NotFound();
+            var training = await _trainingService.GetByIdAsync(id);
+            if (!training.IsSuccess)
+                return NotFound();
 
-            _context.Remove(training);
-            _context.SaveChanges();
+            await _trainingService.Delete(id);
             return NoContent();
         }
        

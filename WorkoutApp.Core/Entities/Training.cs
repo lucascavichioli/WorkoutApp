@@ -26,5 +26,14 @@ namespace WorkoutApp.Core.Entities
             Comments = comments;
             UpdatedAt = DateTime.Now;
         }
+
+        public void Update(string title, string description, short durationMinutes, int likes, int comments)
+        {
+            Title = title;
+            Description = description;
+            DurationMinutes = durationMinutes;
+            Likes = likes;  
+            Comments = comments;
+        }
     }
 }

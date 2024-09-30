@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
-using WorkoutApp.Data.Dtos;
+﻿using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Application.Models.InputViewModels.ExercisesInputModels;
 using WorkoutApp.Application.Services.Exercises;
 
@@ -41,49 +39,31 @@ namespace WorkoutApp.Controllers
         {
             var exercise = await _exerciseService.GetByIdAsync(id);
             if(!exercise.IsSuccess)
-                return NotFound();
+                return NotFound(exercise.Message);
 
             return Ok(exercise);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateExercise(Guid id, [FromBody] UpdateExerciseDTO exerciseDTO)
+        public async Task<IActionResult> UpdateExercise(Guid id, UpdateExercisesInputModel model)
         {
-            var exercise = _context.Exercises.FirstOrDefault(exercise => exercise.Id == id);
-            if (exercise == null) return NotFound();
-            _mapper.Map(exerciseDTO, exercise);
-            _context.SaveChanges();
-            return NoContent();
-        }
+            var exercise = await _exerciseService.GetByIdAsync(id);
+            if(!exercise.IsSuccess)
+                return NotFound(exercise.Message);
 
-        [HttpPatch("{id}")]
-        public IActionResult PartialUpdateExercise(Guid id, JsonPatchDocument<UpdateExerciseDTO> patch)
-        {
-            var exercise = _context.Exercises.FirstOrDefault(exercise => exercise.Id == id);
-            if (exercise == null) return NotFound();
-
-            var exerciseForUpdate = _mapper.Map<UpdateExerciseDTO>(exercise);
-            patch.ApplyTo(exerciseForUpdate, ModelState);
-
-            if (!TryValidateModel(exerciseForUpdate))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(exerciseForUpdate, exercise);
-            _context.SaveChanges();
-            return NoContent();
+            var result = await _exerciseService.Update(id, model);
+            return Ok(result.Message);
         }
 
         [HttpDelete("{id}")]
 
-        public IActionResult DeleteExercise(Guid id)
+        public async Task<IActionResult> DeleteExercise(Guid id)
         {
-            var exercise = _context.Exercises.FirstOrDefault(exercise => exercise.Id == id);
-            if (exercise == null) return NotFound();
+            var exercise = await _exerciseService.GetByIdAsync(id);
+            if (!exercise.IsSuccess)
+                return NotFound();
 
-            _context.Remove(exercise);
-            _context.SaveChanges();
+            await _exerciseService.Delete(id);
             return NoContent();
         }
         

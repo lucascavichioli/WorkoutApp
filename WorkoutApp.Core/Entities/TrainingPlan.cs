@@ -31,5 +31,38 @@ namespace WorkoutApp.Core.Entities
         [JsonIgnore]
         public virtual List<TrainingPlanTraining> TrainingPlanTraining { get; set; }
 
+        public TrainingPlan(string title, string description, int author, 
+                            string? imageLink, short length, short perWeek, 
+                            short perSession, int category, string? locationDifficulty, 
+                            int comments, int likes) 
+            : base()
+        {
+            Title = title;
+            Description = description;
+            Author = author;
+            ImageLink = imageLink;
+            Length = length;
+            PerWeek = perWeek;
+            PerSession = perSession;
+            Category = category;
+            LocationDifficulty = locationDifficulty;
+            Comments = comments;
+            Likes = likes;
+        }
+
+        public void Update(string title, string description, int author,
+                    string? imageLink, short length, short perWeek,
+                    short perSession, int category, string? locationDifficulty)
+        {
+            Title = title;
+            Description = description;
+            Author = author;
+            ImageLink = imageLink;
+            Length = length;
+            PerWeek = perWeek;
+            PerSession = perSession;
+            Category = category;
+            LocationDifficulty = locationDifficulty;
+        }
     }
 }

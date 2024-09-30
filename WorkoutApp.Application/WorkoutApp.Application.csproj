@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="InputViewModels\**" />
+    <EmbeddedResource Remove="InputViewModels\**" />
+    <None Remove="InputViewModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WorkoutApp.Core\WorkoutApp.Core.csproj" />
     <ProjectReference Include="..\WorkoutApp.Infrastructure\WorkoutApp.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="InputViewModels\TrainingPlanTrainingInputModels\" />
-    <Folder Include="InputViewModels\TrainingExercisesInputModels\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

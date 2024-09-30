@@ -2,7 +2,7 @@
 
 namespace WorkoutApp.Application.Models.InputViewModels.TrainingPlanInputModels
 {
-    public class CreateTrainingPlanInputModel
+    public class UpdateTrainingPlanInputModel
     {
         public string Title { get; set; }
 
@@ -26,9 +26,9 @@ namespace WorkoutApp.Application.Models.InputViewModels.TrainingPlanInputModels
         public int Likes { get; set; }
 
         public TrainingPlan ToEntity()
-            => new(Title, Description, Author, 
-                   ImageLink, Length, PerWeek, 
-                   PerSession, Category, LocationDifficulty, 
-                   Comments, Likes);
+        => new(Title, Description, Author,
+               ImageLink, Length, PerWeek,
+               PerSession, Category, LocationDifficulty,
+               Comments, Likes);
     }
 }

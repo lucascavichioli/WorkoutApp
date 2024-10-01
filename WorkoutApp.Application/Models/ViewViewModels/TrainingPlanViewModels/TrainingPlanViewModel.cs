@@ -4,11 +4,12 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingPlanViewModels
 {
     public class TrainingPlanViewModel
     {
-        public TrainingPlanViewModel(string title, string description, int author, 
+        public TrainingPlanViewModel(Guid id, string title, string description, int author, 
                                      string? imageLink, short length, short perWeek, 
                                      short perSession, int category, string? locationDifficulty, 
                                      int comments, int likes)
         {
+            Id = id;
             Title = title;
             Description = description;
             Author = author;
@@ -46,7 +47,7 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingPlanViewModels
 
 
         public static TrainingPlanViewModel FromEntity(TrainingPlan trainingPlan)
-            => new(trainingPlan.Title, trainingPlan.Description,
+            => new(trainingPlan.Id, trainingPlan.Title, trainingPlan.Description,
                    trainingPlan.Author, trainingPlan.ImageLink,
                    trainingPlan.Length, trainingPlan.PerWeek,
                    trainingPlan.PerSession, trainingPlan.Category,

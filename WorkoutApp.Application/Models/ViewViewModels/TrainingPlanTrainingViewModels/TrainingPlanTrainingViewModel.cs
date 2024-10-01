@@ -4,9 +4,10 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingPlanTrainingViewM
 {
     public class TrainingPlanTrainingViewModel
     {
-        public TrainingPlanTrainingViewModel(Guid trainingPlanFK, Guid trainingFK, int order, 
+        public TrainingPlanTrainingViewModel(Guid id, Guid trainingPlanFK, Guid trainingFK, int order, 
                                              int dayOfWeek)
         {
+            Id = id;
             TrainingPlanFK = trainingPlanFK;
             TrainingFK = trainingFK;
             Order = order;
@@ -19,10 +20,8 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingPlanTrainingViewM
 
         public int DayOfWeek { get; set; }
 
-        public Training Training { get; set; } // infos do treino
-
         public static TrainingPlanTrainingViewModel FromEntity(TrainingPlanTraining trainingPlanTraining)
-           => new(trainingPlanTraining.TrainingPlanFK, trainingPlanTraining.TrainingFK,
+           => new(trainingPlanTraining.Id, trainingPlanTraining.TrainingPlanFK, trainingPlanTraining.TrainingFK, 
                   trainingPlanTraining.Order, trainingPlanTraining.DayOfWeek);
     }
 }

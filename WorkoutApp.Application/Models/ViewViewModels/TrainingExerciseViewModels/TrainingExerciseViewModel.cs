@@ -4,11 +4,12 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingExerciseViewModel
 {
     public class TrainingExerciseViewModel
     {
-        public TrainingExerciseViewModel(Guid trainingFK, Guid exercisesFK, string title, 
+        public TrainingExerciseViewModel(Guid id, Guid trainingFK, Guid exercisesFK, string title, 
                                          string description, int durationMinutes, int sets, 
                                          string reps, int restSeconds, int likes, 
                                          int comments, int order)
         {
+            Id = id;
             TrainingFK = trainingFK;
             ExercisesFK = exercisesFK;
             Title = title;
@@ -36,7 +37,7 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingExerciseViewModel
         public int Order { get; set; }
 
         public static TrainingExerciseViewModel FromEntity(TrainingExercises tExercise)
-            => new(tExercise.TrainingFK, tExercise.ExercisesFK, tExercise.Title, 
+            => new(tExercise.Id, tExercise.TrainingFK, tExercise.ExercisesFK, tExercise.Title, 
                    tExercise.Description, tExercise.DurationMinutes, tExercise.Sets, 
                    tExercise.Reps, tExercise.RestSeconds, tExercise.Likes, 
                    tExercise.Comments, tExercise.Order);

@@ -8,6 +8,7 @@ using WorkoutApp.Application.Services.Exercises;
 using WorkoutApp.Application.Services.Training;
 using WorkoutApp.Application.Services.TrainingPlan;
 using WorkoutApp.Application.Services.TrainingExercises;
+using WorkoutApp.Application.Services.TrainingPlanTraining;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,11 +46,12 @@ builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
 builder.Services.AddScoped<ITrainingExerciseService, TrainingExerciseService>();
+builder.Services.AddScoped<ITrainingPlanTrainingService, TrainingPlanTrainingService>();
 
 builder.Services.AddHealthChecks();
 
 // Add services to the container.
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers(options =>
 {

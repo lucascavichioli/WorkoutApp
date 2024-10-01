@@ -5,6 +5,14 @@ namespace WorkoutApp.Core.Entities
 {
     public class TrainingPlanTraining : BaseEntity
     {
+        public TrainingPlanTraining(Guid trainingPlanFK, Guid trainingFK, int order, int dayOfWeek)
+            : base()
+        {
+            TrainingPlanFK = trainingPlanFK;
+            TrainingFK = trainingFK;
+            Order = order;
+            DayOfWeek = dayOfWeek;
+        }
         [JsonIgnore]
         public virtual TrainingPlan TrainingPlan { get; set; }
         
@@ -20,5 +28,14 @@ namespace WorkoutApp.Core.Entities
         public int Order { get; set; }
 
         public int DayOfWeek { get; set; }
+
+        public void Update (Guid trainingPlanFK, Guid trainingFK, int order, int dayOfWeek)
+        {
+            TrainingPlanFK = trainingPlanFK;
+            TrainingFK = trainingFK;
+            Order = order;
+            DayOfWeek = dayOfWeek;
+        }
+
     }
 }

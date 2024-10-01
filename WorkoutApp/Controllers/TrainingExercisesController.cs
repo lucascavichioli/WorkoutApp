@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.Mvc;
-using WorkoutApp.Data.Dtos;
-using WorkoutApp.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using WorkoutApp.Infrastructure.Persistence;
+using WorkoutApp.Application.Services.TrainingExercises;
+using WorkoutApp.Application.Models.InputViewModels.TrainingExerciseInputModels;
 
 namespace WorkoutApp.Controllers
 {
@@ -12,97 +9,78 @@ namespace WorkoutApp.Controllers
     [ApiController]
     public class TrainingExercisesController : ControllerBase
     {
-        private WorkoutAppContext _context;
-        private IMapper _mapper;
-
-        public TrainingExercisesController(WorkoutAppContext context, IMapper mapper)
+        private readonly ITrainingExerciseService _trainingExerciseService;
+        public TrainingExercisesController(ITrainingExerciseService trainingExerciseService)
         {
-            _context = context;
-            _mapper = mapper;
+            _trainingExerciseService = trainingExerciseService;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult AddTrainingExercise([FromBody] CreateTrainingExercisesDTO TrainingExerciseDTO)
+        public async Task<IActionResult> AddTrainingExercise(CreateTrainingExerciseInputModel model)
         {
-            TrainingExercises trainingExercise = _mapper.Map<TrainingExercises>(TrainingExerciseDTO);
-            //_context.TrainingExercises.Add(trainingExercise);
-            //_context.SaveChanges();
-            return CreatedAtAction(nameof(GetTrainingExerciseById), new { id = trainingExercise.Id }, trainingExercise);
+            var result = await _trainingExerciseService.AddAsync(model);
+
+            return CreatedAtAction(nameof(GetTrainingExerciseById), new { id = result.Data }, result);
         }
        
         [HttpGet]
         [AllowAnonymous]
-        public IEnumerable<ReadTrainingExercisesDTO> GetTrainingExercise([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        public async Task<IActionResult> GetTrainingExercise(int skip = 0, int take = 50)
         {
-            return _mapper.Map<List<ReadTrainingExercisesDTO>>(_context.TrainingExercises.Skip(skip).Take(take));
+            var trainingExercise = await _trainingExerciseService.GetAllAsync(skip, take);
+            if (!trainingExercise.IsSuccess)
+                return NotFound();
+
+            return Ok(trainingExercise);
         }
 
+        /// <summary>
+        /// Retorna vínculo do treino e exercício por id
+        /// </summary>
         [ResponseCache(CacheProfileName = "DefaultCache")]
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public IActionResult GetTrainingExerciseById(Guid id)
+        public async Task<IActionResult> GetTrainingExerciseById(Guid id)
         {
-            var trainingExercise = _context.TrainingExercises.FirstOrDefault(trainingExercise => trainingExercise.Id == id);
-            if (trainingExercise == null) {
-                return GetTrainingExerciseByTrainingId(id);
-            } 
+            var trainingExercise = await _trainingExerciseService.GetByIdAsync(id);
+            if (!trainingExercise.IsSuccess)
+                return NotFound(trainingExercise.Message);
 
-            var trainingExerciseDTO = _mapper.Map<ReadTrainingExercisesDTO>(trainingExercise);
-
-            return Ok(trainingExerciseDTO);
+            return Ok(trainingExercise);
         }
 
         [HttpGet("{trainingId}")]
         [AllowAnonymous]
-        private IActionResult GetTrainingExerciseByTrainingId(Guid trinaingId)
+        private async Task<IActionResult> GetTrainingExerciseByTrainingId(Guid trinaingId)
         {
-            var trainingExercise = _context.TrainingExercises.Where(trainingExercise => trainingExercise.TrainingFK == trinaingId);
-            if (trainingExercise == null) return NotFound();
+            var trainingExercise = await _trainingExerciseService.GetByTrainingIdAsync(trinaingId);
+            if (!trainingExercise.IsSuccess)
+                return NotFound();
 
-            var trainingExerciseDTO = _mapper.Map<List<ReadTrainingExercisesDTO>>(trainingExercise);
-
-            return Ok(trainingExerciseDTO);
+            return Ok(trainingExercise);
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateTrainingExercise(Guid id, [FromBody] UpdateTrainingExercisesDTO trainingExerciseDTO)
+        public async Task<IActionResult> UpdateTrainingExercise(Guid id, UpdateTrainingExerciseInputModel model)
         {
-            var trainingExercise = _context.TrainingExercises.FirstOrDefault(trainingExercise => trainingExercise.Id == id);
-            if (trainingExercise == null) return NotFound();
-            _mapper.Map(trainingExerciseDTO, trainingExercise);
-            _context.SaveChanges();
-            return NoContent();
-        }
+            var trainingExercise = await _trainingExerciseService.GetByIdAsync(id);
+            if (!trainingExercise.IsSuccess)
+                return NotFound(trainingExercise.Message);
 
-        [HttpPatch("{id}")]
-        public IActionResult PartialUpdateTrainingExercise(Guid id, JsonPatchDocument<UpdateTrainingExercisesDTO> patch)
-        {
-            var trainingExercise = _context.TrainingExercises.FirstOrDefault(trainingExercise => trainingExercise.Id == id);
-            if (trainingExercise == null) return NotFound();
-
-            var trainingExerciseForUpdate = _mapper.Map<UpdateTrainingExercisesDTO>(trainingExercise);
-            patch.ApplyTo(trainingExerciseForUpdate, ModelState);
-
-            if (!TryValidateModel(trainingExerciseForUpdate))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _mapper.Map(trainingExerciseForUpdate, trainingExercise);
-            _context.SaveChanges();
-            return NoContent();
+            var result = await _trainingExerciseService.Update(id, model);
+            return Ok(result.Message);
         }
 
         [HttpDelete("{id}")]
 
-        public IActionResult DeleteTrainingExercise(Guid id)
+        public async Task<IActionResult> DeleteTrainingExercise(Guid id)
         {
-            var trainingExercise = _context.TrainingExercises.FirstOrDefault(trainingExercise => trainingExercise.Id == id);
-            if (trainingExercise == null) return NotFound();
+            var trainingExercise = await _trainingExerciseService.GetByIdAsync(id);
+            if (!trainingExercise.IsSuccess)
+                return NotFound();
 
-            _context.Remove(trainingExercise);
-            _context.SaveChanges();
+            await _trainingExerciseService.Delete(id);
             return NoContent();
         }
        

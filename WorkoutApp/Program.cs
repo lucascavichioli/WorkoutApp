@@ -7,6 +7,7 @@ using WorkoutApp.Infrastructure.Persistence;
 using WorkoutApp.Application.Services.Exercises;
 using WorkoutApp.Application.Services.Training;
 using WorkoutApp.Application.Services.TrainingPlan;
+using WorkoutApp.Application.Services.TrainingExercises;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -43,6 +44,7 @@ builder.Services.AddDbContext<WorkoutAppAuthContext>(opts =>
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<ITrainingPlanService, TrainingPlanService>();
+builder.Services.AddScoped<ITrainingExerciseService, TrainingExerciseService>();
 
 builder.Services.AddHealthChecks();
 
@@ -104,7 +106,6 @@ app.UseResponseCaching();
 
 app.MapHealthChecks("/healthz");
 
-//app.UseMiddleware<ApiKeyMiddleware>();
 app.MapIdentityApi<User>();
 
 app.MapControllers();

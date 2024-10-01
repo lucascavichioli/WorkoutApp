@@ -31,5 +31,39 @@ namespace WorkoutApp.Core.Entities
 
         public int Order { get; set; }
 
+        public TrainingExercises(Guid trainingFK, Guid exercisesFK, string title, 
+                                 string description, int durationMinutes, int sets, 
+                                 string reps, int restSeconds, int likes, 
+                                 int comments, int order)
+            : base()
+        {
+            TrainingFK = trainingFK;
+            ExercisesFK = exercisesFK;
+            Title = title;
+            Description = description;
+            DurationMinutes = durationMinutes;
+            Sets = sets;
+            Reps = reps;
+            RestSeconds = restSeconds;
+            Likes = likes;
+            Comments = comments;
+            Order = order;
+        }
+
+        public void Update(Guid trainingFK, Guid exercisesFK, string title,
+                                 string description, int durationMinutes, int sets,
+                                 string reps, int restSeconds, int order)
+        {
+            TrainingFK = trainingFK;
+            ExercisesFK = exercisesFK;
+            Title = title;
+            Description = description;
+            DurationMinutes = durationMinutes;
+            Sets = sets;
+            Reps = reps;
+            RestSeconds = restSeconds;
+            Order = order;
+        }
+
     }
 }

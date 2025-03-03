@@ -40,7 +40,7 @@ namespace WorkoutApp.Application.Services.Training
         }
         public async Task<ResultViewModel> Update(Guid id, UpdateTrainingInputModel model)
         {
-            var training = await _context.Training.SingleOrDefaultAsync(t => t.Id == id);
+            var training = await _context.Training.AsNoTracking().SingleOrDefaultAsync(t => t.Id == id);
             if (training is null)
                 return ResultViewModel<TrainingViewModel>.Error("Treino não existe");
 

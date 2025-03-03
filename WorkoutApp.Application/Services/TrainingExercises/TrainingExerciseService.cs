@@ -23,7 +23,7 @@ namespace WorkoutApp.Application.Services.TrainingExercises
 
         public async Task<ResultViewModel<TrainingExerciseViewModel>> GetByIdAsync(Guid id)
         {
-            var trainingExercise = await _context.TrainingExercises.SingleOrDefaultAsync(e => e.Id == id);
+            var trainingExercise = await _context.TrainingExercises.AsNoTracking().SingleOrDefaultAsync(e => e.Id == id);
             if (trainingExercise is null)
                 return ResultViewModel<TrainingExerciseViewModel>.Error("Treino não existe");
             

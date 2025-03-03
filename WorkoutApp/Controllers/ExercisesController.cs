@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WorkoutApp.Application.Models.InputViewModels.ExercisesInputModels;
 using WorkoutApp.Application.Services.Exercises;
 
 namespace WorkoutApp.Controllers
 {
-    [Route("[controller]")]
+    //[Authorize]
     [ApiController]
+    [Route("[controller]")]
     public class ExercisesController : ControllerBase
     {
         private readonly IExerciseService _exerciseService;

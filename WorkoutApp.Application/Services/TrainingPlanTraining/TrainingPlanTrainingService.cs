@@ -5,6 +5,7 @@ using WorkoutApp.Application.Models.ViewViewModels.TrainingPlanTrainingViewModel
 using WorkoutApp.Application.Models.ViewViewModels.TrainingPlanViewModels;
 using WorkoutApp.Infrastructure.Persistence;
 using System.Collections.Generic;
+using WorkoutApp.Core.Entities;
 
 namespace WorkoutApp.Application.Services.TrainingPlanTraining
 {
@@ -25,7 +26,7 @@ namespace WorkoutApp.Application.Services.TrainingPlanTraining
 
         public async Task<ResultViewModel<TrainingPlanTrainingViewModel>> GetByIdAsync(Guid id)
         {
-            var trainingPlanTraining = await _context.TrainingPlanTraining.SingleOrDefaultAsync(e => e.Id == id);
+            var trainingPlanTraining = await _context.TrainingPlanTraining.AsNoTracking().SingleOrDefaultAsync(e => e.Id == id);
             if (trainingPlanTraining is null)
                 return ResultViewModel<TrainingPlanTrainingViewModel>.Error("Vínculo do plano de treino com o treino não existe");
             

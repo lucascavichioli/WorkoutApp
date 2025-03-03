@@ -4,8 +4,9 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingViewModels
 {
     public class TrainingViewModel
     {
-        public TrainingViewModel(string title, string description, short durationMinutes, int likes, int comments)
+        public TrainingViewModel(Guid id, string title, string description, short durationMinutes, int likes, int comments)
         {
+            Id = id;
             Title = title;
             Description = description;
             DurationMinutes = durationMinutes;
@@ -13,6 +14,7 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingViewModels
             Comments = comments;
         }
 
+        public Guid Id { get; set; }
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -23,6 +25,6 @@ namespace WorkoutApp.Application.Models.ViewViewModels.TrainingViewModels
         public int Comments { get; set; }
 
         public static TrainingViewModel FromEntity(Training training)
-            => new(training.Title, training.Description, training.DurationMinutes, training.Likes, training.Comments);
+            => new(training.Id, training.Title, training.Description, training.DurationMinutes, training.Likes, training.Comments);
     }
 }

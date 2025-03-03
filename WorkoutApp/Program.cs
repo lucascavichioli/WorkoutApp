@@ -9,6 +9,10 @@ using WorkoutApp.Application.Services.Training;
 using WorkoutApp.Application.Services.TrainingPlan;
 using WorkoutApp.Application.Services.TrainingExercises;
 using WorkoutApp.Application.Services.TrainingPlanTraining;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,14 +36,9 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddSingleton(configuration);
 
 var conn = builder.Configuration.GetConnectionString("WorkoutConnectionSQLServer");
-var connAuth = builder.Configuration.GetConnectionString("AuthenticationConnectionSQLServer"); 
 
 builder.Services.AddDbContext<WorkoutAppContext>(opts =>
     opts.UseSqlServer(conn)
-);
-
-builder.Services.AddDbContext<WorkoutAppAuthContext>(opts =>
-    opts.UseSqlServer(connAuth)
 );
 
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
@@ -49,9 +48,6 @@ builder.Services.AddScoped<ITrainingExerciseService, TrainingExerciseService>();
 builder.Services.AddScoped<ITrainingPlanTrainingService, TrainingPlanTrainingService>();
 
 builder.Services.AddHealthChecks();
-
-// Add services to the container.
-//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers(options =>
 {
@@ -80,13 +76,25 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddCors();
 builder.Services.AddResponseCaching();
 
-/*Autenticação*/
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication( options => {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "WorkoutApp",
+            ValidAudience = "WorkoutAppSite",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("TESTE")),
+            ClockSkew = TimeSpan.FromMinutes(10)
+        };
+    });
+
 builder.Services.AddAuthorization();
-builder.Services
-    .AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<WorkoutAppAuthContext>();
-/*-----------*/
 
 var app = builder.Build();
 
@@ -100,15 +108,16 @@ if (app.Environment.IsDevelopment())
 app.UseCors(c => {
     c.AllowAnyHeader();
     c.AllowAnyMethod();
-    c.WithOrigins("https://workout-site.vercel.app");
-    //c.WithOrigins("http://localhost:3000");
+    //c.WithOrigins("https://workout-site.vercel.app");
+    c.WithOrigins("http://localhost:3000");
 });
 
 app.UseResponseCaching();
 
-app.MapHealthChecks("/healthz");
+app.UseAuthentication();
+app.UseAuthorization();
 
-app.MapIdentityApi<User>();
+app.MapHealthChecks("/healthz");
 
 app.MapControllers();
 

@@ -5,8 +5,8 @@ using WorkoutApp.Application.Models.InputViewModels.TrainingExerciseInputModels;
 
 namespace WorkoutApp.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class TrainingExercisesController : ControllerBase
     {
         private readonly ITrainingExerciseService _trainingExerciseService;
@@ -50,11 +50,11 @@ namespace WorkoutApp.Controllers
             return Ok(trainingExercise);
         }
 
-        [HttpGet("{trainingId}")]
+        [HttpGet("Training/{trainingId}")]
         [AllowAnonymous]
-        private async Task<IActionResult> GetTrainingExerciseByTrainingId(Guid trinaingId)
+        public async Task<IActionResult> GetTrainingExerciseByTrainingId(Guid trainingId)
         {
-            var trainingExercise = await _trainingExerciseService.GetByTrainingIdAsync(trinaingId);
+            var trainingExercise = await _trainingExerciseService.GetByTrainingIdAsync(trainingId);
             if (!trainingExercise.IsSuccess)
                 return NotFound();
 

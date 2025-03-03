@@ -13,12 +13,13 @@ namespace WorkoutApp.Core.Entities
             Order = order;
             DayOfWeek = dayOfWeek;
         }
+        
         [JsonIgnore]
         public virtual TrainingPlan TrainingPlan { get; set; }
         
         [Required]
         public Guid TrainingPlanFK { get; set; }
-        
+
         [JsonIgnore]
         public virtual Training Training { get; set; }
         [Required]
